@@ -1,6 +1,8 @@
 package com.example.demo;
 
 public class CustomerManager {
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private final long id;
     private final String content;
     
