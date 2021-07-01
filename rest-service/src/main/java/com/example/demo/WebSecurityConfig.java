@@ -23,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //beans are automatically injected for autowired fields
     @Bean
     public UserDetailsService userDetailsService() {
-        return new CustomerDetailsService();
+        return new CustomerDetailsService(null);
     }
     
     //password encoder
@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
             .ignoring()
-            .antMatchers("/h2/**");
+            .antMatchers("/h2/**","/uppercase/**");
     }
      
      

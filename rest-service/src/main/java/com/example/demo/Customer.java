@@ -27,7 +27,7 @@ public class Customer {
   private String password;
 
   
-  protected Customer() {}
+  public Customer() {}
   
   public Customer(String firstName, String lastName, String email, String password) {
     setFirstName(firstName);

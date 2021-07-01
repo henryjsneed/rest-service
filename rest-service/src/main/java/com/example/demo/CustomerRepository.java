@@ -4,10 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
 // PagingAndSortingRepository is an interface that extends CrudInterface
 // CrudInterface declares a number of methods like findById, saveAll, findAllById,
 // and other methods including findAll. PagingAndSortingRepository is an interface
