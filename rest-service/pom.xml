@@ -23,20 +23,20 @@
 				<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
 		
-	<!-- 	<dependency>
+	    <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
-		</dependency> -->
+		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-function-web</artifactId>
 		</dependency>
 		
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-bootstrap</artifactId>
-		</dependency>
+		</dependency> -->
 		<!-- <dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream</artifactId>
@@ -196,6 +196,23 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-context</artifactId>
+        </dependency>
 	</dependencies>
 	
 	<dependencyManagement>
@@ -203,7 +220,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>2020.0.3</version>
+				<version>2020.0.2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -234,7 +251,6 @@
 			<plugin>
 				<groupId>org.springframework.experimental</groupId>
 				<artifactId>spring-aot-maven-plugin</artifactId>
-				<version>20.0.3</version>
 				<executions>
 					<execution>
 						<id>test-generate</id>
@@ -257,6 +273,9 @@
 			<id>spring-releases</id>
 			<name>Spring Releases</name>
 			<url>https://repo.spring.io/release</url>
+			<releases>
+	            <updatePolicy>always</updatePolicy>
+	        </releases>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -270,6 +289,9 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
+			<releases>
+	            <updatePolicy>always</updatePolicy>
+	        </releases>
 		</pluginRepository>
 	</pluginRepositories>
 

@@ -2,22 +2,16 @@ package com.example.demo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-
-import antlr.debug.Event;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.function.Consumer;
+import com.example.model.Customer;
+import com.example.service.CustomerDetailsService;
 
 @Component
 public class CustomerConsumer {
 
-    private final Logger LOG = LoggerFactory.getLogger(CustomerConsumer.class);
+   // private final Logger LOG = LoggerFactory.getLogger(CustomerConsumer.class);
 	
     private CustomerDetailsService detailsService;
 

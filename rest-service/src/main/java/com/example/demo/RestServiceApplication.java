@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -17,14 +16,23 @@ import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
-  
-  @SpringBootApplication
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+  @SpringBootApplication(scanBasePackages={"com.example"})
+  @ComponentScan("com.example")
+  @EntityScan("com.example")
+ // @EnableJpaRepositories
+  @EnableJpaRepositories({"com.example.repository"})
+  @RefreshScope
   public class RestServiceApplication {
    
 	private static final Logger log = LoggerFactory.getLogger(RestServiceApplication.class);
 
-    static final String topicExchangeName = "spring-boot-exchange";
+    public static final String topicExchangeName = "spring-boot-exchange";
 
     static final String queueName = "spring-boot";
 

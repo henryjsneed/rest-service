@@ -9,6 +9,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
+
+import com.example.model.Customer;
+import com.example.repository.CustomerDataRepo;
  
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -21,7 +24,7 @@ public class CustomerDataRepoTest {
 //    @Autowired
 //    private CustomerDataRepo repo;
     @Autowired
-    private CustomerRepository repo;
+    private CustomerDataRepo repo;
      
     // test methods go below
     @Test

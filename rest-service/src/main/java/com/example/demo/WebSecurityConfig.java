@@ -13,17 +13,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.example.service.CustomerDetailsService;
  
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private DataSource dataSource;
+//    @Autowired
+//    private DataSource dataSource;
      
     //beans are automatically injected for autowired fields
     @Bean
     public UserDetailsService userDetailsService() {
-        return new CustomerDetailsService(null);
+        return new CustomerDetailsService();
     }
     
     //password encoder
@@ -54,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .formLogin()
                 .usernameParameter("email")
-                .defaultSuccessUrl("/users")
+                .defaultSuccessUrl("/shopping")
                 .permitAll()
             .and()
             .logout().logoutSuccessUrl("/").permitAll();
@@ -63,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
             .ignoring()
-            .antMatchers("/h2/**","/uppercase/**");
+            .antMatchers("/h2/**","/uppercase/**", "/actuator/**");
     }
      
      
