@@ -1,82 +1,62 @@
 package com.example.service;
 
+
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
-import java.util.function.Supplier;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.function.StreamBridge;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.RestServiceApplication;
+import com.example.demo.CustomerDetails;
 import com.example.model.Customer;
+import com.example.model.Order;
 import com.example.repository.CustomerDataRepo;
-import com.example.util.DataEvent;
-import com.example.util.EventType;
+import com.example.repository.OrderRepository;
 
-import reactor.core.publisher.Mono;
 
 @Service
-public class CustomerService {
+public class CustomerService implements UserDetailsService {
 	
-    private final RabbitTemplate template;
+	@Autowired
+    private CustomerDataRepo customerRepo;
     
-    private final CustomerDetailsService customerData;
-
-    private static final String SUPPLIER_BINDING_NAME = "save-out-0";
-
-    private final StreamBridge stream;
-
-    
-    @Autowired
-	public CustomerService(RabbitTemplate template, CustomerDetailsService customerData, StreamBridge stream) {
-		super();
-		this.template = template;
-		this.stream = stream;
-		this.customerData = customerData;
-	}
-    
- // Publishes customer to the "ints" channel (as defined
-    // in the application.yml file) every second.
-        
-//    @Bean
-//    public Supplier<DataEvent<String, Customer>> save() {
-//        return () -> {
-//            return null;
-//        };
-//    }
-    public void save(Customer customer) {
-    	 DataEvent<String, Customer> event = new DataEvent<String, Customer>(EventType.CREATE, "Customer Saved", customer);
-    	  boolean sent = stream.send(SUPPLIER_BINDING_NAME, event);
+	@Autowired
+	private OrderRepository orderRepo;
+	    
+    @Override
+    public CustomerDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Customer customer = customerRepo.findByEmail(username);
+        if (customer == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return new CustomerDetails(customer);
     }
-//        public Mono<User> saveUser(User user) {
-//            return userRepository.save(user);
-//        }
-
     
-//	public String save(Customer c) {
-//		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String encodedPassword = passwordEncoder.encode(c.getPassword());
-//        // Sets customer password as encrypted password
-//        c.setPassword(encodedPassword); 
-//        template.setMessageConverter(new Jackson2JsonMessageConverter());
-//        template.convertAndSend(RestServiceApplication.topicExchangeName, "foo.bar.baz", c);
-//        return "register_success";
-////        return customerData.saveCustomer(c);
-//	}
-	
-	// is there a best practice for void methods vs, for exmaple, returning "users"?
-	public List<Customer> findAll() {
-		return customerData.findAll();	
-	}
-
-	public Optional<Customer> findById(long id) {
-		return customerData.findById(id);
-	}
-	
+    public void saveCustomer(Customer c) {
+         customerRepo.save(c);
+    }
+    
+    public void saveOrder(Order o) {
+    	orderRepo.save(o);
+    }
+    
+    public void deleteCustomer(Customer c) {
+    //	DataEvent<String, Customer> event = new DataEvent<String, Customer>(type.DELETE, "Customer removed", c);
+    //    boolean sent = stream.send(PRODUCER_BINDING_NAME, event);
+    	customerRepo.delete(c);
+    }
+    
+    public List<Customer> findAll() {
+    	return customerRepo.findAll();
+    }
+    
+    public Optional<Customer> findById(long id) {
+    	return customerRepo.findById(id);
+    }
+    
+    public Customer findByEmail(String username) {
+    	return customerRepo.findByEmail(username);
+    }
 }

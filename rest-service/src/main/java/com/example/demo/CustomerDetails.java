@@ -8,9 +8,6 @@ import com.example.model.Customer;
 
 public class CustomerDetails implements UserDetails {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private Customer customer;

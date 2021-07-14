@@ -6,9 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.springframework.stereotype.Component;
-
-// @Entity indicates this class is a JPA entity
+// indicates this class is a JPA entity
 @Entity
 public class Customer {
 
