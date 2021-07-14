@@ -1,12 +1,25 @@
 package com.example.demo;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import com.example.dto.OrderDto;
 import com.example.model.Customer;
+import com.example.model.Order;
+import com.example.model.OrderItems;
 import com.example.service.CustomerDetailsService;
+import com.example.util.DataEvent;
+
+//Sink
+// Subscribe to the "total" channel and log the results
 
 @Component
 public class CustomerConsumer {
@@ -19,14 +32,65 @@ public class CustomerConsumer {
     public CustomerConsumer(CustomerDetailsService service) {
     	this.detailsService = service;
     }
+    
+    @Bean
+    public Consumer<Customer> receive() {
+        return customer -> {
+        	System.out.println("\n\nCustomer received: " + customer.getLastName());
+        	Customer cust = new Customer(customer.getFirstName(),customer.getLastName(), customer.getEmail(), customer.getPassword());
+            detailsService.saveCustomer(cust);
+        };
+    }
+    
+    @Bean
+    public Consumer<Order> receiveOrder() {
+        return order -> {
+        	System.out.println("\n\nOrder received: " + order.getId());
+        //	OrderItems item = new OrderItems(order.getOrderItems().g);
+            
+        	Order jpaOrder = new Order(order.getOrderNumber(), order.getOrderItems());
+        	detailsService.saveOrder(jpaOrder);
+        };
+    }
+}
+    
+//  @Bean
+//  public Consumer<DataEvent<String, Customer>> receive() {
+//      return event -> {
+//      	System.out.println("\n\nCustomer received: " + event.getData().getFirstName());
+//          detailsService.saveCustomer(event.getData());
+//      };
+//  }
+    //consume customer sent from customer service and return customer to queue if verify is successful
+//    @Bean
+//    public Function<String, Customer> verify() {
+//    	    return username -> {
+//    	    	System.out.println("testing");
+//	        	Customer customerInDatabase = detailsService.findByEmail(username);
+//	            if (customerInDatabase == null) {
+//	                throw new UsernameNotFoundException("User not found");
+//	            }
+//	            return customerInDatabase;
+//        };
+//    }
+
+    
+    
+//    @Bean
+//    public Function<Customer, List<Customer>> () {
+//        return customer -> {
+//        	System.out.println("\n\nCustomer received: " + customer.getFirstName());
+//            detailsService.saveCustomer(customer);
+//        };
+//    }
    // private final CustomerDetailsService customerService;
 
 
     
-    public void CustomerServiceConsumer(Customer customer) {
-    	System.out.println("\n\nCustomer received: " + customer.getFirstName());
-    	detailsService.saveCustomer(customer);
-    }
+//    public void CustomerServiceConsumer(Customer customer) {
+//    	System.out.println("\n\nCustomer received: " + customer.getFirstName());
+//    	detailsService.saveCustomer(customer);
+//    }
 
 //    @Bean
 //    //@RabbitListener(queues = Config.QUEUE)
@@ -35,7 +99,6 @@ public class CustomerConsumer {
 //              LOG.info("Consuming creation of customer {}", customer.getFirstName());
 //          };
 //    }
-  }
 //    @Bean
 //  //  @RabbitListener(queues = Config.QUEUE)
 //    public Consumer<DataEvent<String, Customer>> CustomerServiceConsumer() {

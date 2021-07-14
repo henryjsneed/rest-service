@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.CustomerDetails;
 import com.example.model.Customer;
+import com.example.model.Order;
 import com.example.repository.CustomerDataRepo;
+import com.example.repository.OrderRepository;
 import com.example.util.DataEvent;
 import com.example.util.EventType;
 
@@ -29,6 +31,9 @@ public class CustomerDetailsService implements UserDetailsService {
 	@Autowired
     private CustomerDataRepo customerRepo;
     
+	@Autowired
+	private OrderRepository orderRepo;
+	
     private EventType type;
     
  // Stores the topic/binding name as the supplier name
@@ -54,6 +59,10 @@ public class CustomerDetailsService implements UserDetailsService {
          customerRepo.save(c);
     }
     
+    public void saveOrder(Order o) {
+    	orderRepo.save(o);
+    }
+    
     public void deleteCustomer(Customer c) {
     	DataEvent<String, Customer> event = new DataEvent<String, Customer>(type.DELETE, "Customer removed", c);
     //    boolean sent = stream.send(PRODUCER_BINDING_NAME, event);
@@ -66,6 +75,10 @@ public class CustomerDetailsService implements UserDetailsService {
     
     public Optional<Customer> findById(long id) {
     	return customerRepo.findById(id);
+    }
+    
+    public Customer findByEmail(String username) {
+    	return customerRepo.findByEmail(username);
     }
   // Check the repo above for proper implementation.
 }
